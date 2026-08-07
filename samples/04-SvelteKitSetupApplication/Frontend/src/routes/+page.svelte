@@ -109,7 +109,12 @@
 <svelte:head><title>Runic Toolkit · SvelteKit Setup</title></svelte:head>
 <svelte:window onpagehide={() => void bridge.dispose()} />
 
-<main class="shell" data-e2e-view={snapshot.viewId} data-e2e-progress={progress}>
+<main
+  class="shell"
+  data-e2e-view={snapshot.viewId}
+  data-e2e-progress={progress}
+  data-e2e-status={bridge.status}
+>
   <header>
     <div>
       <p class="eyebrow">Svelte 5 · SvelteKit · native CsWebUi</p>

@@ -11,3 +11,7 @@ export const handleError: HandleClientError = ({ error }) => {
   globalThis.__runicBootError = message;
   return { message };
 };
+
+if (globalThis.location.hash === "#runic-e2e") {
+  void import("$lib/native-e2e").then(({ runNativeE2E }) => runNativeE2E());
+}

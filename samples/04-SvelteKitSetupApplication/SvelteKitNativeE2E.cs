@@ -1,7 +1,6 @@
 using System;
 using System.Diagnostics;
 using System.IO;
-using System.Threading;
 using System.Threading.Tasks;
 using CsWebUi;
 using RunicToolkit.ApplicationBridge;
@@ -31,39 +30,41 @@ internal static class SvelteKitNativeE2E
         window.SetPublic(false);
         window.SetRootFolder(webRoot);
         await using CsWebUiApplicationBridge bridge = CsWebUiApplicationBridge.Attach(window, session);
+        var resultSource = new TaskCompletionSource<string>(TaskCreationOptions.RunContinuationsAsynchronously);
+        using WebUiBinding resultBinding = window.Bind(
+            "__runicToolkit_sveltekit_e2e_result",
+            webUiEvent => resultSource.TrySetResult(
+                webUiEvent.ArgumentCount == 1 ? webUiEvent.GetString() : "error|binding|invalid result"));
         string url = window.StartServer("index.html");
         Directory.CreateDirectory(profile);
-        using var browser = CreateBrowser(browserPath, profile, url);
+        using var browser = CreateBrowser(browserPath, profile, url + "#runic-e2e");
 
         try
         {
             if (!browser.Start()) throw new InvalidOperationException("The browser did not start.");
             Task<string> diagnostics = browser.StandardError.ReadToEndAsync();
-            string result = string.Empty;
-            // ExecuteJavaScript and binding responses share CsWebUi's native response path.
-            // Let the larger SvelteKit bundle finish its initial bridge handshake before polling.
-            await Task.Delay(TimeSpan.FromSeconds(2)).ConfigureAwait(false);
-            using var timeout = new CancellationTokenSource(TimeSpan.FromSeconds(25));
+            string result;
             try
             {
-                while (!timeout.IsCancellationRequested)
+                result = await resultSource.Task.WaitAsync(TimeSpan.FromSeconds(35)).ConfigureAwait(false);
+            }
+            catch (TimeoutException)
+            {
+                try
                 {
-                    try
-                    {
-                        result = window.ExecuteJavaScript(
-                            InteractionScript,
-                            TimeSpan.FromSeconds(1),
-                            512);
-                        if (result.StartsWith("Complete|5", StringComparison.Ordinal) ||
-                            result.Contains("|error ·", StringComparison.Ordinal)) break;
-                    }
-                    catch (WebUiException) { }
-                    await Task.Delay(100, timeout.Token).ConfigureAwait(false);
+                    string browserState = window.ExecuteJavaScript(
+                        "return `${location.href}|${document.querySelector('[data-e2e-view]')?.getAttribute('data-e2e-view') ?? 'unmounted'}|${document.querySelector('.status')?.textContent ?? 'no-status'}|result-binding:${typeof globalThis.__runicToolkit_sveltekit_e2e_result}|${globalThis.__runicBootError || ''}`;",
+                        TimeSpan.FromSeconds(2),
+                        1024);
+                    result = "error|host-timeout|" + browserState;
+                }
+                catch (WebUiException exception)
+                {
+                    result = "error|host-timeout|diagnostics unavailable: " + exception.Message;
                 }
             }
-            catch (OperationCanceledException) { }
 
-            bool passed = result.StartsWith("Complete|5|", StringComparison.Ordinal);
+            bool passed = string.Equals(result, "pass|Complete|5", StringComparison.Ordinal);
             Console.WriteLine(passed
                 ? "PASS: native browser completed the package-only SvelteKit vertical."
                 : $"FAIL: native SvelteKit result was '{result}' (host identity: {bridge.ConnectionIdentity?.ToString() ?? "none"}).");
@@ -117,24 +118,4 @@ internal static class SvelteKitNativeE2E
         }
     }
 
-    private const string InteractionScript = """
-        const root = document.querySelector('[data-e2e-view]');
-        if (!root) return `loading|${document.readyState}|${globalThis.__runicBootError || ''}|${document.body.innerText.slice(0, 160)}`;
-        const view = root.getAttribute('data-e2e-view') || 'loading';
-        const progress = root.getAttribute('data-e2e-progress') || '0';
-        const status = document.querySelector('.status')?.textContent?.trim() || '';
-        const error = document.querySelector('.error')?.textContent?.trim() || '';
-        const binding = typeof globalThis.__runicToolkit_applicationBridge_send;
-        const webui = typeof globalThis.webui;
-        const click = (name) => {
-          const button = document.querySelector(`[data-e2e="${name}"]`);
-          if (button && !button.disabled) button.click();
-        };
-        if (view === 'Welcome') click('next');
-        else if (view === 'Destination') {
-          const text = document.querySelector('section p')?.textContent || '';
-          click(text.includes('No destination') ? 'select' : 'next');
-        } else if (view === 'Features') click('install');
-        return `${view}|${progress}|${status}|${error}|binding:${binding}|webui:${webui}`;
-        """;
 }
