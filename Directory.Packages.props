@@ -19,10 +19,10 @@
     <PackageVersion Include="RunicFlow.Generators" Version="0.1.0-preview.4.1" />
     <PackageVersion Include="RunicFlow.CommunityToolkit" Version="0.1.0-preview.4.1" />
     <PackageVersion Include="RunicFlow.RunicToolkit" Version="0.1.0-preview.4.1" />
-    <PackageVersion Include="RunicAssets" Version="0.1.0-preview.14.1" />
-    <PackageVersion Include="RunicAssets.CsWebUi" Version="0.1.0-preview.14.1" />
-    <PackageVersion Include="RunicAssets.AspNetCore" Version="0.1.0-preview.14.1" />
-    <PackageVersion Include="RunicAssets.RunicToolkit" Version="0.1.0-preview.14.1" />
+    <PackageVersion Include="RunicAssets" Version="0.1.0-preview.16.1" />
+    <PackageVersion Include="RunicAssets.CsWebUi" Version="0.1.0-preview.16.1" />
+    <PackageVersion Include="RunicAssets.AspNetCore" Version="0.1.0-preview.16.1" />
+    <PackageVersion Include="RunicAssets.RunicToolkit" Version="0.1.0-preview.16.1" />
     <PackageVersion Include="RunicToolkit.ApplicationBridge" Version="0.1.0-preview.21.1" />
     <PackageVersion Include="RunicToolkit.ApplicationBridge.Generators" Version="0.1.0-preview.21.1" />
     <PackageVersion Include="RunicToolkit.Collections" Version="0.1.0-preview.21.1" />
