@@ -102,6 +102,9 @@ jobs:
       - name: Restore browser packages
         run: npm ci
 
+      - name: Verify and build frontend
+        run: npm run verify
+
       - name: Publish NativeAOT Setup application
         run: >-
           dotnet publish samples/03-SetupApplication/SetupApplication.csproj
