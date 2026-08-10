@@ -5,7 +5,7 @@ import { defineConfig } from "vite";
 export default defineConfig({
   plugins: [
     runicTranslations({
-      manifest: "../obj/translations/setup.esm/web-module-manifest-v1.json",
+      manifest: "../obj/net10.0/translations/setup.esm/web-module-manifest-v1.json",
       sourceFiles: [
         "../Resources/setup.catalog.json",
         "../Resources/setup.en.json",

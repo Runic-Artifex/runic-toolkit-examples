@@ -22,7 +22,7 @@ dotnet run --project samples/05-RunicTranslationsSetup/RunicTranslationsSetup.cs
 ```
 
 The MSBuild integration calls the version-pinned `runic-translations` local tool
-and writes generated artifacts below `obj/translations/`. To prove a clean editor
+and writes generated artifacts below `obj/net10.0/translations/`. To prove a clean editor
 or CLI change reproduces the committed contract, run:
 
 ```bash
@@ -30,7 +30,7 @@ cd samples/05-RunicTranslationsSetup
 dotnet tool run runic-translations verify \
   --catalog Resources/setup.catalog.json \
   --documents Resources/setup.en.json Resources/setup.de.json \
-  --output obj/translations \
+  --output obj/net10.0/translations \
   --emit-esm
 ```
 

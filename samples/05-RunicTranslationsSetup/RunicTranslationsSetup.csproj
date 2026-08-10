@@ -6,7 +6,7 @@
     <IsPackable>false</IsPackable>
     <IntermediateOutputPath>obj/</IntermediateOutputPath>
     <TranslationsEmitEsm>true</TranslationsEmitEsm>
-    <TranslationsOutputPath>$(IntermediateOutputPath)translations</TranslationsOutputPath>
+    <TranslationsOutputPath>obj/$(TargetFramework)/translations</TranslationsOutputPath>
   </PropertyGroup>
 
   <ItemGroup>

@@ -17,7 +17,10 @@ before(async () => {
     plugins: [
       runicTranslations({
         manifest: fileURLToPath(
-          new URL("../../obj/translations/setup.esm/web-module-manifest-v1.json", import.meta.url),
+          new URL(
+            "../../obj/net10.0/translations/setup.esm/web-module-manifest-v1.json",
+            import.meta.url,
+          ),
         ),
       }),
     ],

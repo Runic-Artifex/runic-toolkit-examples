@@ -70,7 +70,7 @@ jobs:
           dotnet tool run runic-translations verify
           --catalog Resources/setup.catalog.json
           --documents Resources/setup.en.json Resources/setup.de.json
-          --output obj/translations
+          --output obj/net10.0/translations
           --emit-esm
 
       - name: Verify frontend package consumers
