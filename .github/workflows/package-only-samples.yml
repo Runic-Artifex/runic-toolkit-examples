@@ -138,6 +138,12 @@ jobs:
       - name: Restore browser packages
         run: npm ci
 
+      - name: Generate translation frontend artifacts
+        shell: bash
+        run: |
+          dotnet tool restore --tool-manifest samples/05-RunicTranslationsSetup/.config/dotnet-tools.json
+          dotnet build samples/05-RunicTranslationsSetup/RunicTranslationsSetup.csproj --configuration Release
+
       - name: Verify and build frontend
         run: npm run verify
 
@@ -196,6 +202,12 @@ jobs:
 
       - name: Restore package-only frontend
         run: npm ci
+
+      - name: Generate translation frontend artifacts
+        shell: pwsh
+        run: |
+          dotnet tool restore --tool-manifest samples/05-RunicTranslationsSetup/.config/dotnet-tools.json
+          dotnet build samples/05-RunicTranslationsSetup/RunicTranslationsSetup.csproj --configuration Release
 
       - name: Verify and build frontend
         run: npm run verify
