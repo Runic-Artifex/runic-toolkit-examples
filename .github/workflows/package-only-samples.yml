@@ -64,13 +64,22 @@ jobs:
           --no-restore
           --configuration Release
 
+      - name: Generate editor and CLI output contract
+        working-directory: samples/05-RunicTranslationsSetup
+        run: >-
+          dotnet tool run runic-translations generate
+          --catalog Resources/setup.catalog.json
+          --documents Resources/setup.en.json Resources/setup.de.json
+          --output obj/cli-verification
+          --emit-esm
+
       - name: Verify editor and CLI output contract
         working-directory: samples/05-RunicTranslationsSetup
         run: >-
           dotnet tool run runic-translations verify
           --catalog Resources/setup.catalog.json
           --documents Resources/setup.en.json Resources/setup.de.json
-          --output obj/net10.0/translations
+          --output obj/cli-verification
           --emit-esm
 
       - name: Verify frontend package consumers
