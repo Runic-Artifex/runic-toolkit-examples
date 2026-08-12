@@ -35,10 +35,9 @@ and next step.
 - A supported desktop browser or WebView for the interactive CS-WebUI samples.
   The headless smoke checks do not open a window.
 
-The package catalog records the current availability of every preview artifact.
-The committed [`.npmrc`](.npmrc) provides the scoped npm registry configuration
-and accepts `NODE_AUTH_TOKEN` only where an environment requires it; do not add
-a token to the repository.
+The committed [`.npmrc`](.npmrc) supplies the scoped npm registry
+configuration. Check the public package catalog for the current availability of
+each preview artifact.
 
 ## Choose a package
 

@@ -7,10 +7,8 @@ NativeAOT application.
 
 ## Prerequisites
 
-Install the repository's .NET 10 SDK from [`../global.json`](../global.json).
-Check the public package catalog for the current availability of each preview
-artifact. If your package-source environment requires authentication, provide
-`NODE_AUTH_TOKEN` or the standard NuGet credentials outside the checkout.
+Use .NET SDK 10.0.302, pinned in [`../global.json`](../global.json). Check the
+public package catalog for the current availability of each preview artifact.
 
 ## Run a canary
 
@@ -28,8 +26,9 @@ dotnet run --project integrations/RunicAssets.Canary --configuration Release
 | `RunicFlow.Canary` | Headless process decisions and Application Bridge operation identity | A managed/NativeAOT success message |
 | `RunicAssets.Canary` | Archive round-trip and CS-WebUI, ASP.NET Core, and Runic Toolkit adapters | An asset round-trip success message |
 
-The command-line, Flow, and Assets canaries are also designed for NativeAOT
-publishing. See the repository workflows for the exact publish matrix.
+The Command Line, Flow, and Assets canaries also cover consumer paths intended
+for NativeAOT publishing. See the package documentation for platform support
+before choosing NativeAOT for an application.
 
 ## Select a package
 
