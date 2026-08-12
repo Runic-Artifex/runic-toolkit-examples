@@ -72,11 +72,10 @@ dotnet tool run runic-translations verify \
   --emit-esm
 ```
 
-Dynamic locale packs remain a preview limitation: preview 4.3 rejects the
-canonical v2 locale output path when JSON is selected. The generated preview
-API currently uses identifiers such as `m$Application$Title`; this sample keeps
-them behind `src/lib/messages.ts` so a future ergonomic namespace can be
-adopted in one place.
+Generated ESM exposes an exact-key `m` namespace: single-segment keys use dot
+access and dotted keys use bracket access. This sample re-exports that namespace
+from `src/lib/messages.ts` and keeps its text-reference transport handlers at
+the same boundary.
 
 ## Next
 
